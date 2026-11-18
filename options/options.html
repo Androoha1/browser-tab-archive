@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tab Archive settings</title>
+    <link rel="stylesheet" href="../lib/tokens.css" />
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="page-head">
+        <span class="head-icon" data-icon="archive"></span>
+        <h1>Tab Archive</h1>
+      </header>
+
+      <section class="welcome card" id="welcome" hidden>
+        <h2>Welcome</h2>
+        <p>Press <span class="key" data-shortcut="archive-tab">⌘.</span> on any tab to archive it, or right-click a tab and choose Archive tab. Your archive lives in the sidebar.</p>
+      </section>
+
+      <div class="notice" role="note">
+        <span class="notice-icon" data-icon="warning"></span>
+        <p><strong>Uninstalling deletes the archive.</strong> Backups in Downloads/tab-archive/ stay on your computer and can be imported again.</p>
+      </div>
+
+      <section class="card">
+        <h2><span data-icon="archive"></span>Archiving</h2>
+        <div class="setting">
+          <div>
+            <label class="label" for="notePrompt">Note prompt</label>
+            <p class="desc">Ask for a note each time you archive. Unnamed groups always ask for a name.</p>
+          </div>
+          <input type="checkbox" class="toggle" id="notePrompt" />
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span data-icon="download"></span>Backups</h2>
+        <div class="setting">
+          <div>
+            <label class="label" for="backups">Automatic backups</label>
+            <p class="desc">Saved to Downloads/tab-archive/ a few seconds after every change. The last 5 versions are kept.</p>
+          </div>
+          <input type="checkbox" class="toggle" id="backups" />
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span data-icon="bookmark"></span>Bookmark mirror</h2>
+        <div class="setting">
+          <div>
+            <label class="label" for="mirror">Bookmark mirror</label>
+            <p class="desc">Keeps a copy of the archive in your bookmarks, so it survives uninstalling. Groups become subfolders.</p>
+          </div>
+          <input type="checkbox" class="toggle" id="mirror" />
+        </div>
+        <div class="sub" id="mirror-options">
+          <div class="fields">
+            <div>
+              <label class="label" for="mirrorLocation">Location</label>
+              <select id="mirrorLocation" class="text-field select">
+                <option value="unfiled_____">Other Bookmarks</option>
+                <option value="toolbar_____">Bookmarks Toolbar</option>
+                <option value="menu________">Bookmarks Menu</option>
+              </select>
+            </div>
+            <div>
+              <label class="label" for="mirrorFolder">Folder name</label>
+              <input id="mirrorFolder" class="text-field" spellcheck="false" />
+            </div>
+          </div>
+          <fieldset class="radios">
+            <legend class="label">Single tabs</legend>
+            <label><input type="radio" name="mirrorMonthly" value="flat" /> Flat in the folder</label>
+            <label><input type="radio" name="mirrorMonthly" value="monthly" /> <span>In monthly subfolders, like <span id="month-example">2026-11</span></span></label>
+          </fieldset>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span data-icon="file"></span>Your data</h2>
+        <p class="desc">Export saves the whole archive as one JSON file. Import merges a file in and skips entries you already have.</p>
+        <div class="buttons">
+          <button class="btn" id="export">Export archive</button>
+          <button class="btn" id="import">Import archive</button>
+          <input type="file" id="import-file" accept="application/json,.json" hidden />
+        </div>
+        <p class="status" id="data-status" role="status"></p>
+      </section>
+
+      <section class="card">
+        <h2><span data-icon="keyboard"></span>Keyboard shortcuts</h2>
+        <div class="shortcut">
+          <span>Archive tab</span>
+          <span class="key" data-shortcut="archive-tab">⌘.</span>
+        </div>
+        <div class="shortcut">
+          <span>Show or hide sidebar</span>
+          <span class="key" data-shortcut="_execute_sidebar_action">⌘⇧,</span>
+        </div>
+        <p class="desc foot">Change them in Firefox’s add-on settings. <a href="#" id="manage-shortcuts">Manage extension shortcuts</a></p>
+      </section>
+    </main>
+    <script type="module" src="options.js"></script>
+  </body>
+</html>

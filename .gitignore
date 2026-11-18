@@ -1,0 +1,8 @@
+.DS_Store
+.idea/
+node_modules/
+web-ext-artifacts/
+*.xpi
+*.zip
+.env
+.amo-credentials

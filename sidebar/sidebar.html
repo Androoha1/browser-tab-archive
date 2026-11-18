@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tab Archive</title>
+    <link rel="stylesheet" href="../lib/tokens.css" />
+    <link rel="stylesheet" href="sidebar.css" />
+  </head>
+  <body>
+    <main id="browse">
+      <div class="toolbar">
+        <label class="search text-field">
+          <span class="search-icon"></span>
+          <input id="search" type="search" placeholder="Search archive" autocomplete="off" spellcheck="false" />
+          <button class="icon-button clear" id="clear" title="Clear search" aria-label="Clear search" hidden></button>
+        </label>
+      </div>
+      <ul id="list" class="list" role="list"></ul>
+      <div id="empty" class="state" hidden>
+        <span class="state-icon"></span>
+        <h2>Start your archive</h2>
+        <p>Press <span class="key" data-shortcut="archive-tab">⌘.</span> on any tab, or right-click a tab and choose Archive tab.</p>
+      </div>
+      <div id="nomatch" class="state" hidden>
+        <h2 id="nomatch-title"></h2>
+        <p>Search covers titles, notes, URLs, group names and the tabs inside groups.</p>
+      </div>
+    </main>
+
+    <footer class="bottom-bar">
+      <button class="footer-button" id="settings"><span class="footer-icon"></span>Settings</button>
+    </footer>
+
+    <script type="module" src="sidebar.js"></script>
+  </body>
+</html>

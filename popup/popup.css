@@ -1,0 +1,71 @@
+[hidden] {
+  display: none !important;
+}
+
+body {
+  width: 324px;
+  padding: 12px;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+}
+
+.field + .field {
+  margin-top: 8px;
+}
+
+.field-icon {
+  display: flex;
+  color: var(--accent);
+}
+
+/* Only the first visible field carries the archive icon. */
+.field ~ .field .field-icon {
+  display: none;
+}
+
+#name-wrap[hidden] + .field .field-icon {
+  display: flex;
+}
+
+.field input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  outline: none;
+}
+
+.field input::placeholder {
+  color: var(--text-secondary);
+}
+
+.name,
+.name::placeholder {
+  font-weight: 600;
+}
+
+.hints {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 0;
+  color: var(--text-secondary);
+  font-size: var(--font-small);
+}
+
+.hints .sep {
+  padding: 0 2px;
+}
+
+.hints .full {
+  flex-basis: 100%;
+  margin-top: 2px;
+}

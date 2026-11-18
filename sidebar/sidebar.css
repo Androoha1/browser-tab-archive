@@ -1,0 +1,394 @@
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text);
+  cursor: default;
+  flex: none;
+}
+
+.icon-button:hover {
+  background: var(--row-hover);
+}
+
+.icon-button:focus-visible,
+.footer-button:focus-visible,
+.row:focus-visible,
+.btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+/* ---------- toolbar ---------- */
+
+#browse {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 12px 12px 12px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px 0 11px;
+  flex: 1;
+  width: auto;
+  min-width: 0;
+}
+
+.search-icon {
+  color: var(--text-secondary);
+  display: flex;
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  outline: none;
+}
+
+.search input::placeholder {
+  color: var(--text-secondary);
+}
+
+.search input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.search .clear {
+  width: 24px;
+  height: 24px;
+}
+
+/* ---------- list ---------- */
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0 8px 16px;
+}
+
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  column-gap: 8px;
+  padding: 6px 8px 7px;
+  border-radius: var(--radius);
+  outline: none;
+}
+
+.row:hover,
+.row.editing,
+.row:focus-within {
+  background: var(--row-hover);
+}
+
+.lead {
+  display: flex;
+  align-items: center;
+  height: 18px;
+}
+
+.favicon {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  flex: none;
+}
+
+.tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  flex: none;
+}
+
+.main {
+  min-width: 0;
+}
+
+.title-line {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+}
+
+.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.group .title {
+  font-weight: 700;
+}
+
+.count {
+  flex: none;
+  color: var(--text-secondary);
+  font-size: var(--font-small);
+}
+
+.note {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-small);
+  line-height: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.date {
+  color: var(--text-secondary);
+  font-size: var(--font-small);
+  font-variant-numeric: tabular-nums;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.actions {
+  position: absolute;
+  top: 3px;
+  right: 6px;
+  display: none;
+  gap: 0;
+}
+
+.row:hover .actions,
+.row:focus-within .actions {
+  display: flex;
+}
+
+.row:hover .date,
+.row:focus-within .date {
+  visibility: hidden;
+}
+
+.row.editing .actions,
+.row.editing .date {
+  display: none;
+}
+
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+  align-self: center;
+}
+
+.group .lead {
+  margin-left: -1px;
+}
+
+
+.chevron {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  display: flex;
+}
+
+.children {
+  list-style: none;
+  margin: 0 0 2px;
+  padding: 0 0 0 24px;
+}
+
+.child {
+  grid-template-columns: 16px minmax(0, 1fr);
+  padding: 5px 8px;
+}
+
+/* edit note, inline */
+
+.edit-field {
+  margin-top: 6px;
+  height: 28px;
+}
+
+.edit-field:focus {
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.hints {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0 0;
+  color: var(--text-secondary);
+  font-size: var(--font-small);
+}
+
+.hints .sep {
+  padding: 0 2px;
+}
+
+/* delete confirmation */
+
+.confirm {
+  margin: 2px 0;
+  padding: 10px 8px 8px;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius);
+  background: var(--critical-bg);
+}
+
+.confirm h3 {
+  margin: 0;
+  font-size: var(--font-body);
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.confirm p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-small);
+  line-height: 16px;
+}
+
+.confirm .buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.btn {
+  height: 24px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--button);
+  font-weight: 600;
+}
+
+.btn:hover {
+  background: var(--button-hover);
+}
+
+.btn.destructive {
+  background: var(--destructive);
+  color: var(--on-destructive);
+}
+
+.btn.destructive:hover {
+  background: var(--destructive-hover);
+}
+
+/* ---------- empty / no results ---------- */
+
+.state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 24px 80px;
+  text-align: center;
+}
+
+.state-icon {
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.state-icon .icon {
+  width: 26px;
+  height: 26px;
+}
+
+.state h2 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.state p {
+  margin: 0;
+  max-width: 260px;
+  color: var(--text-secondary);
+  line-height: 20px;
+}
+
+/* ---------- bottom bar ---------- */
+
+.bottom-bar {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  padding: 6px 8px;
+  border-top: 1px solid var(--border-card);
+  background: var(--bg);
+}
+
+.footer-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  cursor: default;
+}
+
+.footer-button:hover {
+  background: var(--row-hover);
+}
+
+.footer-icon {
+  display: flex;
+}

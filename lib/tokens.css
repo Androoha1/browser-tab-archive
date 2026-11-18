@@ -1,0 +1,129 @@
+/* Acorn design tokens, light and dark, as listed in the spec. */
+:root {
+  color-scheme: light dark;
+  --text: #15141a;
+  --text-secondary: rgba(21, 20, 26, 0.69);
+  --bg: #f9f9fb;
+  --card: #ffffff;
+  --menu: #ffffff;
+  --row-hover: rgba(21, 20, 26, 0.07);
+  --menu-hover: #e0e0e6;
+  --accent: #0062fa;
+  --accent-hover: #0053cb;
+  --on-accent: #ffffff;
+  --border: #cfcfd8;
+  --border-input: #8f8f9d;
+  --border-card: rgba(21, 20, 26, 0.1);
+  --chip-bg: #f0f0f4;
+  --chip-border: #cfcfd8;
+  --button: rgba(21, 20, 26, 0.07);
+  --button-hover: rgba(21, 20, 26, 0.14);
+  --warning-bg: #fff4d0;
+  --warning-icon: #9c5200;
+  --critical-bg: #ffe8ea;
+  --destructive: #b20037;
+  --destructive-hover: #8f002c;
+  --on-destructive: #ffffff;
+  --toggle-off: #8f8f9d;
+  --tile-ink: #15141a;
+
+  --radius: 4px;
+  --radius-card: 8px;
+  --font-body: 13px;
+  --font-small: 11px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #fbfbfe;
+    --text-secondary: rgba(251, 251, 254, 0.69);
+    --bg: #1c1b22;
+    --card: #23222b;
+    --menu: #2b2a33;
+    --row-hover: rgba(251, 251, 254, 0.07);
+    --menu-hover: #52525e;
+    --accent: #00cadb;
+    --accent-hover: #61dce9;
+    --on-accent: #15141a;
+    --border: #3a3944;
+    --border-input: #bfbfc9;
+    --border-card: rgba(251, 251, 254, 0.1);
+    --chip-bg: rgba(251, 251, 254, 0.07);
+    --chip-border: #52525e;
+    --button: rgba(251, 251, 254, 0.12);
+    --button-hover: rgba(251, 251, 254, 0.2);
+    --warning-bg: #592b00;
+    --warning-icon: #ffe699;
+    --critical-bg: #6e001f;
+    --destructive: #ffa0aa;
+    --destructive-hover: #ffbdc5;
+    --on-destructive: #15141a;
+    --toggle-off: #bfbfc9;
+    --tile-ink: #52525e;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: message-box;
+  font-size: var(--font-body);
+  line-height: 18px;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+.key {
+  display: inline-block;
+  min-width: 18px;
+  padding: 0 4px;
+  border: 1px solid var(--chip-border);
+  border-radius: var(--radius);
+  background: var(--chip-bg);
+  color: var(--text);
+  font-size: var(--font-small);
+  font-weight: 600;
+  line-height: 15px;
+  text-align: center;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  display: block;
+}
+
+.text-field {
+  display: block;
+  width: 100%;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius);
+  background: var(--card);
+  outline: none;
+}
+
+.text-field:focus,
+.text-field:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.text-field::placeholder {
+  color: var(--text-secondary);
+}

@@ -1,0 +1,69 @@
+{
+  "manifest_version": 2,
+  "name": "Tab Archive",
+  "version": "1.0.1",
+  "description": "Archive a tab or a whole tab group with one keystroke, add a note, and find it again later.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "tab-archive@local",
+      "strict_min_version": "139.0"
+    }
+  },
+  "incognito": "not_allowed",
+  "icons": {
+    "48": "icons/icon.svg",
+    "96": "icons/icon.svg"
+  },
+  "permissions": [
+    "tabs",
+    "tabGroups",
+    "storage",
+    "unlimitedStorage",
+    "menus",
+    "notifications",
+    "scripting",
+    "downloads",
+    "cookies",
+    "<all_urls>"
+  ],
+  "optional_permissions": ["bookmarks"],
+  "background": {
+    "scripts": ["background/background.js"],
+    "type": "module",
+    "persistent": true
+  },
+  "browser_action": {
+    "default_title": "Tab Archive",
+    "default_icon": "icons/icon-dark.svg",
+    "theme_icons": [
+      { "light": "icons/icon-light.svg", "dark": "icons/icon-dark.svg", "size": 16 },
+      { "light": "icons/icon-light.svg", "dark": "icons/icon-dark.svg", "size": 32 }
+    ]
+  },
+  "sidebar_action": {
+    "default_title": "Tab Archive",
+    "default_panel": "sidebar/sidebar.html",
+    "default_icon": "icons/icon-dark.svg",
+    "open_at_install": false
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "commands": {
+    "archive-tab": {
+      "suggested_key": {
+        "default": "Ctrl+Period",
+        "mac": "Command+Period"
+      },
+      "description": "Archive tab"
+    },
+    "_execute_sidebar_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Comma",
+        "mac": "Command+Shift+Comma"
+      },
+      "description": "Show or hide sidebar"
+    }
+  }
+}

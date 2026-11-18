@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Archive tab</title>
+    <link rel="stylesheet" href="../lib/tokens.css" />
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <form id="prompt" autocomplete="off" hidden>
+      <label class="text-field field" id="name-wrap">
+        <span class="field-icon" aria-hidden="true"></span>
+        <input id="name" class="name" placeholder="Group name" aria-label="Group name" spellcheck="false" />
+      </label>
+      <label class="text-field field" id="note-wrap">
+        <span class="field-icon" aria-hidden="true"></span>
+        <input id="note" placeholder="Add a note" aria-label="Note" />
+      </label>
+      <p class="hints" id="hints"></p>
+    </form>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>
