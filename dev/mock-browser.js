@@ -81,6 +81,7 @@ globalThis.browser = {
   commands: {
     getAll: async () => [
       { name: "archive-tab", shortcut: "Command+Period" },
+      { name: "archive-group", shortcut: "Command+Shift+Period" },
       { name: "_execute_sidebar_action", shortcut: "Command+Shift+Comma" },
     ],
   },

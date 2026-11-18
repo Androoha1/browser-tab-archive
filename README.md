@@ -1,6 +1,6 @@
 # Browser Tab Archive
 
-Firefox extension: archive a tab or tab group with ⌘. (or the tab context menu), add a note, and find it again in the sidebar.
+Firefox extension: archive a tab with ⌘. or a whole tab group with ⌘⇧. (or from the tab context menu), add a note, and find it again in the sidebar.
 
 ## Setup
 
