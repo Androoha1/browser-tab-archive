@@ -2,7 +2,7 @@
   "name": "browser-tab-archive",
   "private": true,
   "scripts": {
-    "dev": "web-ext run --source-dir . --ignore-files 'dev/**' 'scripts/**' 'dist/**' 'releases/**' 'node_modules/**'",
+    "dev": "web-ext run",
     "sync": "scripts/sync.sh"
   },
   "devDependencies": {
