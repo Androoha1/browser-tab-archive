@@ -15,6 +15,7 @@ import { toastArchived, toastDuplicate } from "./toast.js";
 let settings = { ...DEFAULT_SETTINGS };
 let urlIndex = new Map(); // url -> archivedAt (earliest)
 const highlighted = new Map(); // windowId -> Set<tabId>
+const groupTitles = new Map(); // groupId -> title, for the group hotkey
 let menuContext = null; // filled by menus.onShown, read by menus.onClicked
 let ready = false;
 
@@ -44,9 +45,17 @@ async function loadHighlighted() {
   }
 }
 
-const warmUp = Promise.all([loadSettings(), rebuildIndex(), loadHighlighted()])
+async function loadGroupTitles() {
+  for (const g of await browser.tabGroups.query({})) groupTitles.set(g.id, g.title || "");
+}
+
+const warmUp = Promise.all([loadSettings(), rebuildIndex(), loadHighlighted(), loadGroupTitles()])
   .then(() => (ready = true))
   .catch((err) => console.error("Browser Tab Archive: warm-up failed", err));
+
+browser.tabGroups.onCreated.addListener((g) => groupTitles.set(g.id, g.title || ""));
+browser.tabGroups.onUpdated.addListener((g) => groupTitles.set(g.id, g.title || ""));
+browser.tabGroups.onRemoved.addListener((g) => groupTitles.delete(g.id));
 
 browser.tabs.onHighlighted.addListener(({ windowId, tabIds }) => {
   highlighted.set(windowId, new Set(tabIds));
@@ -96,7 +105,7 @@ const POPUP_TIMEOUT_MS = 2000;
 
 /**
  * Synchronous first half of every archive action.
- * mode: "hotkey" | "menu-tab" | "menu-group"
+ * mode: "hotkey" | "hotkey-group" | "menu-tab" | "menu-group"
  */
 function trigger(mode, tab) {
   const guess = guessPrompt(mode, tab);
@@ -132,11 +141,17 @@ function trigger(mode, tab) {
   });
 }
 
+const isGroupMode = (mode) => mode === "menu-group" || mode === "hotkey-group";
+const inGroup = (tab) => tab.groupId != null && tab.groupId !== -1;
+
 function guessPrompt(mode, tab) {
   if (!ready || !tab) return { prompt: true };
   if (mode === "menu-group") {
     const group = menuContext?.tabId === tab.id ? menuContext.group : null;
     return { prompt: settings.notePrompt || !group?.title };
+  }
+  if (mode === "hotkey-group") {
+    return { prompt: settings.notePrompt || !groupTitles.get(tab.groupId) };
   }
   const sel = highlighted.get(tab.windowId);
   const isSelection = sel && sel.size > 1 && (mode === "hotkey" || sel.has(tab.id));
@@ -154,7 +169,7 @@ async function prepare(job, mode, tab, openedPromise) {
 
   let tabs;
   let group = null;
-  if (mode === "menu-group" && tab.groupId != null && tab.groupId !== -1) {
+  if (isGroupMode(mode) && inGroup(tab)) {
     group = await browser.tabGroups.get(tab.groupId);
     tabs = await browser.tabs.query({ windowId, groupId: tab.groupId });
   } else {
@@ -164,7 +179,7 @@ async function prepare(job, mode, tab, openedPromise) {
   }
   tabs.sort((a, b) => a.index - b.index);
 
-  const isGroup = mode === "menu-group" || tabs.length > 1;
+  const isGroup = isGroupMode(mode) || tabs.length > 1;
   if (!isGroup) {
     const dup = urlIndex.get(tab.url);
     if (dup) {
@@ -429,6 +444,8 @@ async function importEntries(payload) {
 
 browser.commands.onCommand.addListener((name, tab) => {
   if (name === "archive-tab") trigger("hotkey", tab);
+  // Outside a group, the group shortcut archives the tab like ⌘. does.
+  if (name === "archive-group") trigger(tab && inGroup(tab) ? "hotkey-group" : "hotkey", tab);
 });
 
 browser.browserAction.onClicked.addListener(() => {

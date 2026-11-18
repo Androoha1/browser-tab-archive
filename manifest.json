@@ -61,6 +61,13 @@
       },
       "description": "Archive tab"
     },
+    "archive-group": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Period",
+        "mac": "Command+Shift+Period"
+      },
+      "description": "Archive tab group"
+    },
     "_execute_sidebar_action": {
       "suggested_key": {
         "default": "Ctrl+Shift+Comma",
