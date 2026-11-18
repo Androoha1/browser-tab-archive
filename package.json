@@ -3,8 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "web-ext run --source-dir . --ignore-files 'dev/**' 'scripts/**' 'dist/**' 'releases/**' 'node_modules/**'",
-    "ship": "scripts/ship.sh",
-    "update": "scripts/install-latest.sh"
+    "sync": "scripts/sync.sh"
   },
   "devDependencies": {
     "web-ext": "^10.8.0"

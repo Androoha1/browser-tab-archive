@@ -11,7 +11,23 @@ npm run dev
 
 `npm run dev` opens a separate, throwaway Firefox profile with the extension loaded from this folder, and reloads it whenever you save a file. Your installed copy and its archive aren't touched. For UI work without Firefox, `node dev/serve.mjs` serves the pages with a fake `browser` API.
 
-Work on a branch and merge into `main` when the change is finished: every push to `main` is a release.
+## Workflow
+
+Nobody pushes to `main` directly (the owner may). For each change:
+
+1. `git switch main` and `git pull`
+2. `git switch -c feature/<name>`
+3. Develop and test with `npm run dev`
+4. `git push -u origin feature/<name>`
+5. Open a pull request on GitHub and wait for the owner to merge it.
+
+Merging into `main` makes a release (see below). To get it, run:
+
+```bash
+npm run sync
+```
+
+`sync` updates your local `main` (your current branch and uncommitted changes stay as they are), waits if GitHub is still signing a release, and opens the newest release in Firefox. Click **Add** to install. If that version is already installed it does nothing; `npm run sync -- --force` reinstalls it.
 
 The extension uses Manifest V2 with a persistent background page, not V3. In MV3, Firefox suspends the background script when idle, so hotkey and menu events arrive late. Firefox then refuses to open the sidebar from them. Firefox fully supports MV2.
 
@@ -21,10 +37,7 @@ Uninstalling deletes the archive. Backups in `Downloads/browser-tab-archive/` st
 
 ## Releases
 
-Firefox only installs extensions permanently if Mozilla has signed them. On every push to `main`, the GitHub Action in `.github/workflows/release.yml` runs `scripts/release.sh`, which signs the committed code as an **unlisted** add-on: Mozilla signs it but doesn't publish it on addons.mozilla.org. The signed `.xpi` is attached to a GitHub release in this private repo. The version is `1.0.<number of commits on main>`.
-
-- `npm run ship`: push `main`, wait for the release, and open it in Firefox (click **Add**).
-- `npm run update`: open the newest release in Firefox, e.g. after merging a pull request on GitHub.
+Firefox only installs extensions permanently if Mozilla has signed them. On every push to `main` that changes the extension itself (`manifest.json`, `background/`, `lib/`, `popup/`, `sidebar/`, `options/`, `icons/`), the GitHub Action in `.github/workflows/release.yml` runs `scripts/release.sh`, which signs the committed code as an **unlisted** add-on: Mozilla signs it but doesn't publish it on addons.mozilla.org. The signed `.xpi` is attached to a GitHub release in this private repo. The version is `1.0.<number of commits on main>`.
 
 Data is kept across updates.
 
@@ -42,7 +55,7 @@ One-time setup: the repo needs two Actions secrets, `AMO_JWT_ISSUER` and `AMO_JW
 | `popup/` | Note prompt, shown as the toolbar button's popup while archiving |
 | `sidebar/` | Archive list, search, inline edit/delete |
 | `options/` | Settings page |
-| `scripts/` | Release signing (CI), `ship` and `update` |
+| `scripts/` | Release signing (CI) and `sync` |
 | `.github/workflows/` | Release workflow |
 | `dev/` | Mock `browser` API and a static server for previewing the UI in a normal browser. Not packaged. |
 
