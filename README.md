@@ -1,4 +1,4 @@
-# Tab Archive
+# Browser Tab Archive
 
 Firefox extension: archive a tab or tab group with ⌘. (or the tab context menu), add a note, and find it again in the sidebar.
 
@@ -12,7 +12,7 @@ The extension uses Manifest V2 with a persistent background page, not V3. In MV3
 
 The toolbar icon uses `theme_icons` (`icon-dark.svg` on light toolbars, `icon-light.svg` on dark ones). `icon-dark.svg` also switches itself to the light color under a dark color scheme, because Firefox's extensions menu and sidebar icons ignore `theme_icons` with the built-in dark theme.
 
-A temporary add-on is removed when Firefox quits, along with its archive. Backups in `Downloads/tab-archive/` stay on disk and can be imported again.
+A temporary add-on is removed when Firefox quits, along with its archive. Backups in `Downloads/browser-tab-archive/` stay on disk and can be imported again.
 
 ## Releases
 
@@ -49,6 +49,6 @@ After that, every commit on `main` signs a new version in the background and ope
 These depend on Firefox behavior that cannot be tested outside the browser:
 
 - The note field gets keyboard focus when ⌘. opens the toolbar popup.
-- With only "Archive tab" visible, Firefox shows it at the top level. With both items visible, it nests them under "Tab Archive".
+- With only "Archive tab" visible, Firefox shows it at the top level. With both items visible, it nests them under "Browser Tab Archive".
 - Backups don't show a save dialog when "Always ask where to save files" is on.
 - Group reopening restores the name and color.

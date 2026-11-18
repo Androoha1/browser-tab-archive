@@ -4,7 +4,7 @@
 
 /** Runs inside the page. Must be self-contained. */
 function showPill(kind, text, holdMs) {
-  const ID = "tab-archive-toast-host";
+  const ID = "browser-tab-archive-toast-host";
   document.getElementById(ID)?.remove();
   const host = document.createElement("div");
   host.id = ID;
@@ -63,7 +63,7 @@ function notify(text) {
   return browser.notifications.create({
     type: "basic",
     iconUrl: browser.runtime.getURL("icons/icon.svg"),
-    title: "Tab Archive",
+    title: "Browser Tab Archive",
     message: text,
   });
 }

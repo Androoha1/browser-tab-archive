@@ -1,11 +1,11 @@
 {
   "manifest_version": 2,
-  "name": "Tab Archive",
+  "name": "Browser Tab Archive",
   "version": "1.0.0",
   "description": "Archive a tab or a whole tab group with one keystroke, add a note, and find it again later.",
   "browser_specific_settings": {
     "gecko": {
-      "id": "tab-archive@androoha1",
+      "id": "browser-tab-archive@androoha1",
       "strict_min_version": "140.0",
       "data_collection_permissions": {
         "required": ["none"]
@@ -36,7 +36,7 @@
     "persistent": true
   },
   "browser_action": {
-    "default_title": "Tab Archive",
+    "default_title": "Browser Tab Archive",
     "default_icon": "icons/icon-dark.svg",
     "theme_icons": [
       { "light": "icons/icon-light.svg", "dark": "icons/icon-dark.svg", "size": 16 },
@@ -44,7 +44,7 @@
     ]
   },
   "sidebar_action": {
-    "default_title": "Tab Archive",
+    "default_title": "Browser Tab Archive",
     "default_panel": "sidebar/sidebar.html",
     "default_icon": "icons/icon-dark.svg",
     "open_at_install": false

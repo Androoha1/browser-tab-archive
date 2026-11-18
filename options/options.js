@@ -67,7 +67,7 @@ $("export").addEventListener("click", async () => {
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
   const a = Object.assign(document.createElement("a"), {
     href: URL.createObjectURL(blob),
-    download: `tab-archive-${ymd()}.json`,
+    download: `browser-tab-archive-${ymd()}.json`,
   });
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 10000);

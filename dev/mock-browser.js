@@ -71,7 +71,7 @@ globalThis.browser = {
           entries = entries.filter((e) => e.id !== msg.id);
           return;
         case "export":
-          return { format: "tab-archive", version: 1, entries };
+          return { format: "browser-tab-archive", version: 1, entries };
         case "import":
           return { added: 0, skipped: msg.payload.entries?.length || 0 };
       }

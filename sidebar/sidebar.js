@@ -296,7 +296,7 @@ async function checkPanelOpen() {
   panelOpen = await browser.sidebarAction.isOpen({ windowId: state.windowId });
 }
 function claimHeader() {
-  if (panelOpen) browser.sidebarAction.setTitle({ title: "Tab Archive", windowId: state.windowId });
+  if (panelOpen) browser.sidebarAction.setTitle({ title: "Browser Tab Archive", windowId: state.windowId });
   requestAnimationFrame(claimHeader);
 }
 

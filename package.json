@@ -1,8 +1,11 @@
 {
-  "name": "tab-archive",
+  "name": "browser-tab-archive",
   "private": true,
   "scripts": {
     "release": "scripts/release.sh",
     "install-hook": "scripts/install-hook.sh"
+  },
+  "devDependencies": {
+    "web-ext": "^10.8.0"
   }
 }

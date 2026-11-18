@@ -1,4 +1,4 @@
-// Automatic JSON backups to Downloads/tab-archive/backup-1.json … backup-5.json.
+// Automatic JSON backups to Downloads/browser-tab-archive/backup-1.json … backup-5.json.
 // Runs about 5 seconds after the last change, so a burst of changes saves once.
 
 const DEBOUNCE_MS = 5000;
@@ -7,7 +7,7 @@ let timer = null;
 
 export function exportPayload(entries) {
   return {
-    format: "tab-archive",
+    format: "browser-tab-archive",
     version: 1,
     exportedAt: new Date().toISOString(),
     entries,
@@ -21,7 +21,7 @@ export function scheduleBackup(getEntries, isEnabled) {
     try {
       await writeBackup(await getEntries());
     } catch (err) {
-      console.error("Tab Archive: backup failed", err);
+      console.error("Browser Tab Archive: backup failed", err);
     }
   }, DEBOUNCE_MS);
 }
@@ -35,7 +35,7 @@ async function writeBackup(entries) {
     // saveAs: false keeps "Always ask where to save files" from showing a dialog.
     const id = await browser.downloads.download({
       url,
-      filename: `tab-archive/backup-${slot}.json`,
+      filename: `browser-tab-archive/backup-${slot}.json`,
       conflictAction: "overwrite",
       saveAs: false,
     });

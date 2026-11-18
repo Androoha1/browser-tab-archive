@@ -88,7 +88,7 @@ async function run(settings, fn) {
   try {
     await fn(state);
   } catch (err) {
-    console.error("Tab Archive: bookmark mirror failed", err);
+    console.error("Browser Tab Archive: bookmark mirror failed", err);
   }
   await saveState(state);
 }
@@ -134,7 +134,7 @@ export async function mirrorRebuild(entries, settings) {
       // Oldest first, so bookmark order matches the archive's order of arrival.
       for (const e of [...entries].reverse()) await createFor(e, fresh, settings);
     } catch (err) {
-      console.error("Tab Archive: bookmark mirror rebuild failed", err);
+      console.error("Browser Tab Archive: bookmark mirror rebuild failed", err);
     }
   }
   await saveState(fresh);

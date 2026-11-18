@@ -1,4 +1,4 @@
-// Tab Archive background script (persistent MV2 background page).
+// Browser Tab Archive background script (persistent MV2 background page).
 //
 // browserAction.openPopup() only works synchronously inside a user-action handler
 // (hotkey or menu click), so every trigger decides from in-memory caches
@@ -46,7 +46,7 @@ async function loadHighlighted() {
 
 const warmUp = Promise.all([loadSettings(), rebuildIndex(), loadHighlighted()])
   .then(() => (ready = true))
-  .catch((err) => console.error("Tab Archive: warm-up failed", err));
+  .catch((err) => console.error("Browser Tab Archive: warm-up failed", err));
 
 browser.tabs.onHighlighted.addListener(({ windowId, tabIds }) => {
   highlighted.set(windowId, new Set(tabIds));
@@ -100,7 +100,7 @@ const POPUP_TIMEOUT_MS = 2000;
  */
 function trigger(mode, tab) {
   const guess = guessPrompt(mode, tab);
-  console.info("Tab Archive: trigger", mode, { tabId: tab?.id, ready, guess });
+  console.info("Browser Tab Archive: trigger", mode, { tabId: tab?.id, ready, guess });
 
   if (guess.dupDate) {
     toastDuplicate(tab.id, ymd(guess.dupDate));
@@ -120,14 +120,14 @@ function trigger(mode, tab) {
       () => false
     ).then((ok) => {
       if (!ok) {
-        console.warn("Tab Archive: popup did not open, archiving without a note");
+        console.warn("Browser Tab Archive: popup did not open, archiving without a note");
         clearPopup();
       }
       return ok;
     });
   }
   prepare(job, mode, tab, opened).catch((err) => {
-    console.error("Tab Archive: archive failed", err);
+    console.error("Browser Tab Archive: archive failed", err);
     endJob(job);
   });
 }
@@ -234,7 +234,7 @@ browser.runtime.onConnect.addListener((port) => {
     endJob(job);
     // The popup echoes the tab id it was opened for, so the right tab is archived.
     if (msg.type === "commit" && (job.tabId == null || msg.tabId === job.tabId)) {
-      await commit(job.request, msg).catch((err) => console.error("Tab Archive: archive failed", err));
+      await commit(job.request, msg).catch((err) => console.error("Browser Tab Archive: archive failed", err));
     }
   });
   // Closing the popup by any means (Esc, clicking away, switching tabs) cancels.
@@ -370,7 +370,7 @@ async function createTab(t, windowId, active) {
   try {
     return await browser.tabs.create(props);
   } catch (err) {
-    console.warn("Tab Archive: cannot open", t.url, err);
+    console.warn("Browser Tab Archive: cannot open", t.url, err);
     return null;
   }
 }
@@ -404,7 +404,7 @@ function validEntry(e) {
 
 async function importEntries(payload) {
   const list = Array.isArray(payload) ? payload : payload?.entries;
-  if (!Array.isArray(list)) throw new Error("This file is not a Tab Archive export.");
+  if (!Array.isArray(list)) throw new Error("This file is not a Browser Tab Archive export.");
   const existing = await db.getAll();
   const ids = new Set(existing.map((e) => e.id));
   const added = [];

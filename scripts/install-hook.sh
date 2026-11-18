@@ -10,7 +10,7 @@ cat > "$hook" <<'HOOK'
 root="$(git rev-parse --show-toplevel)"
 mkdir -p "$root/releases"
 ( "$root/scripts/release.sh" >> "$root/releases/release.log" 2>&1 \
-  || osascript -e 'display notification "Signing failed. See releases/release.log." with title "Tab Archive"' ) &
+  || osascript -e 'display notification "Signing failed. See releases/release.log." with title "Browser Tab Archive"' ) &
 HOOK
 chmod +x "$hook"
 echo "Installed $hook"

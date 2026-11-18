@@ -26,11 +26,11 @@ node -e '
 ' "$build/manifest.json" "$version"
 
 mkdir -p releases
-echo "Signing Tab Archive $version (usually takes a minute or two)..."
+echo "Signing Browser Tab Archive $version (usually takes a minute or two)..."
 npx web-ext sign --channel=unlisted --source-dir "$build" --artifacts-dir releases \
   --api-key "$key" --api-secret "$secret"
 
 xpi=$(ls -t releases/*.xpi | head -1)
 echo "Signed: $xpi"
 open -a Firefox "$xpi"
-osascript -e "display notification \"Version $version is ready. Click Add in Firefox.\" with title \"Tab Archive\"" || true
+osascript -e "display notification \"Version $version is ready. Click Add in Firefox.\" with title \"Browser Tab Archive\"" || true
