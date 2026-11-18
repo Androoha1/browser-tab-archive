@@ -2,38 +2,54 @@
 
 Firefox extension: archive a tab or tab group with ⌘. (or the tab context menu), add a note, and find it again in the sidebar.
 
-## Develop
+## Setup
+
+You need Firefox, Node.js, git and the GitHub CLI (`gh`), plus access to this repo.
 
 ```bash
+gh auth login
+gh repo clone Androoha1/browser-tab-archive
+cd browser-tab-archive
 npm install
-npm run dev
+npm run sync
 ```
 
-`npm run dev` opens a separate, throwaway Firefox profile with the extension loaded from this folder, and reloads it whenever you save a file. Your installed copy and its archive aren't touched. For UI work without Firefox, `node dev/serve.mjs` serves the pages with a fake `browser` API.
+`npm run sync` at the end installs the current release in your Firefox (click **Add**).
 
 ## Workflow
 
 Nobody pushes to `main` directly (the owner may). For each change:
 
-1. `git switch main` and `git pull`
-2. `git switch -c feature/<name>`
-3. Develop and test with `npm run dev`
-4. `git push -u origin feature/<name>`
+1. Start from the latest `main`: `git switch main` and `git pull`
+2. Create a branch: `git switch -c feature/<name>`
+3. Develop and test with `npm run dev` (see below)
+4. Push the branch: `git push -u origin feature/<name>`
 5. Open a pull request on GitHub and wait for the owner to merge it.
 
-Merging into `main` makes a release (see below). To get it, run:
+If `main` changes while you work, bring those changes into your branch before opening the pull request:
+
+```bash
+git fetch
+git rebase origin/main
+```
+
+If git reports a conflict, fix the marked files, test again, then `git add` them and `git rebase --continue`. A rebased branch that was already pushed needs `git push --force-with-lease`.
+
+Merging a pull request into `main` makes a release (see Releases). To get it on your computer:
 
 ```bash
 npm run sync
 ```
 
-`sync` updates your local `main` (your current branch and uncommitted changes stay as they are), waits if GitHub is still signing a release, and opens the newest release in Firefox. Click **Add** to install. If that version is already installed it does nothing; `npm run sync -- --force` reinstalls it.
+`sync` updates your local `main` (your current branch and uncommitted changes stay as they are), waits if GitHub is still signing a release, and opens the newest release in Firefox. Click **Add** to install; your archive is kept. If that version is already installed it does nothing; `npm run sync -- --force` reinstalls it.
 
-The extension uses Manifest V2 with a persistent background page, not V3. In MV3, Firefox suspends the background script when idle, so hotkey and menu events arrive late. Firefox then refuses to open the sidebar from them. Firefox fully supports MV2.
+## Testing changes
 
-The toolbar icon uses `theme_icons` (`icon-dark.svg` on light toolbars, `icon-light.svg` on dark ones). `icon-dark.svg` also switches itself to the light color under a dark color scheme, because Firefox's extensions menu and sidebar icons ignore `theme_icons` with the built-in dark theme.
+```bash
+npm run dev
+```
 
-Uninstalling deletes the archive. Backups in `Downloads/browser-tab-archive/` stay on disk and can be imported again.
+This opens a separate, throwaway Firefox profile with the extension loaded from your folder, and reloads it whenever you save a file. Your installed copy and its archive aren't touched. For UI work without Firefox, `node dev/serve.mjs` serves the pages with a fake `browser` API.
 
 ## Releases
 
@@ -42,6 +58,14 @@ Firefox only installs extensions permanently if Mozilla has signed them. On ever
 Data is kept across updates.
 
 One-time setup: the repo needs two Actions secrets, `AMO_JWT_ISSUER` and `AMO_JWT_SECRET`, with the API credentials from https://addons.mozilla.org/developers/addon/api/key/. Set them with `gh secret set AMO_JWT_ISSUER` and `gh secret set AMO_JWT_SECRET`, which ask for the value.
+
+## Notes
+
+The extension uses Manifest V2 with a persistent background page, not V3. In MV3, Firefox suspends the background script when idle, so hotkey and menu events arrive late. Firefox then refuses to open the sidebar from them. Firefox fully supports MV2.
+
+The toolbar icon uses `theme_icons` (`icon-dark.svg` on light toolbars, `icon-light.svg` on dark ones). `icon-dark.svg` also switches itself to the light color under a dark color scheme, because Firefox's extensions menu and sidebar icons ignore `theme_icons` with the built-in dark theme.
+
+Uninstalling deletes the archive. Backups in `Downloads/browser-tab-archive/` stay on disk and can be imported again.
 
 ## Layout
 
