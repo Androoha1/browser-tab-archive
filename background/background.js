@@ -472,8 +472,9 @@ function createMenus() {
 // A persistent MV2 background page creates its menus every time it loads.
 createMenus();
 
-browser.runtime.onInstalled.addListener(({ reason }) => {
-  if (reason === "install") {
+browser.runtime.onInstalled.addListener(({ reason, temporary }) => {
+  // `npm run dev` installs a temporary copy on every run; skip the welcome page there.
+  if (reason === "install" && !temporary) {
     browser.tabs.create({ url: browser.runtime.getURL("options/options.html?welcome=1") });
   }
 });

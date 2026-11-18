@@ -49,7 +49,9 @@ npm run sync
 npm run dev
 ```
 
-This opens a separate, throwaway Firefox profile with the extension loaded from your folder, and reloads it whenever you save a file. Your installed copy and its archive aren't touched. For UI work without Firefox, `node dev/serve.mjs` serves the pages with a fake `browser` API.
+This opens a separate, throwaway Firefox profile with the extension loaded from your folder, and reloads it whenever you save a file. Your installed copy and its archive aren't touched. The toolbar button is pinned right after the address bar, and two web pages open so there's something to archive. The settings are in `web-ext-config.mjs` and the starter profile in `dev/firefox-profile/`.
+
+The "Archived" pill only shows on web pages. Firefox's own pages (a new tab, `about:` pages, addons.mozilla.org) don't allow it, so there the toolbar button shows a ✓ badge instead. For UI work without Firefox, `node dev/serve.mjs` serves the pages with a fake `browser` API.
 
 ## Releases
 
@@ -81,7 +83,7 @@ Uninstalling deletes the archive. Backups in `Downloads/browser-tab-archive/` st
 | `options/` | Settings page |
 | `scripts/` | Release signing (CI) and `sync` |
 | `.github/workflows/` | Release workflow |
-| `dev/` | Mock `browser` API and a static server for previewing the UI in a normal browser. Not packaged. |
+| `dev/` | Starter profile for `npm run dev`, plus a mock `browser` API and static server for previewing the UI in a normal browser. Not packaged. |
 
 ## Check in real Firefox
 
