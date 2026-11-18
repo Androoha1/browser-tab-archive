@@ -1,23 +1,22 @@
 #!/bin/bash
-# Builds the committed extension (HEAD), has Mozilla sign it as an unlisted
-# (private) add-on, and opens the signed .xpi in Firefox to install it.
-# Version = major.minor from manifest.json + number of commits, so every
-# commit gets a new, higher version.
+# Builds the committed extension (HEAD) and has Mozilla sign it as an unlisted
+# (private) add-on. Runs in GitHub Actions on every push to main.
 #
-# AMO API credentials are read from the macOS Keychain (see README).
+# Needs WEB_EXT_API_KEY and WEB_EXT_API_SECRET (AMO JWT issuer and secret).
+# Version = major.minor from manifest.json + number of commits on main, so
+# every release gets a new, higher version.
+# Output: dist/browser-tab-archive-<version>.xpi
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
-
-key=$(security find-generic-password -s tab-archive-amo -a jwt-issuer -w 2>/dev/null) || {
-  echo "Missing AMO API key in Keychain. See README > Releases." >&2; exit 1; }
-secret=$(security find-generic-password -s tab-archive-amo -a jwt-secret -w 2>/dev/null) || {
-  echo "Missing AMO API secret in Keychain. See README > Releases." >&2; exit 1; }
+: "${WEB_EXT_API_KEY:?missing AMO JWT issuer}"
+: "${WEB_EXT_API_SECRET:?missing AMO JWT secret}"
 
 base=$(node -p 'require("./manifest.json").version.split(".").slice(0,2).join(".")')
 version="$base.$(git rev-list --count HEAD)"
 
 build=$(mktemp -d)
-trap 'rm -rf "$build"' EXIT
+signed=$(mktemp -d)
+trap 'rm -rf "$build" "$signed"' EXIT
 git archive HEAD manifest.json background lib popup sidebar options icons | tar -x -C "$build"
 node -e '
   const f = process.argv[1], m = require(f);
@@ -25,12 +24,14 @@ node -e '
   require("fs").writeFileSync(f, JSON.stringify(m, null, 2) + "\n");
 ' "$build/manifest.json" "$version"
 
-mkdir -p releases
-echo "Signing Browser Tab Archive $version (usually takes a minute or two)..."
-npx web-ext sign --channel=unlisted --source-dir "$build" --artifacts-dir releases \
-  --api-key "$key" --api-secret "$secret"
+echo "Signing Browser Tab Archive $version..."
+npx web-ext sign --channel=unlisted --source-dir "$build" --artifacts-dir "$signed"
 
-xpi=$(ls -t releases/*.xpi | head -1)
+mkdir -p dist
+xpi="dist/browser-tab-archive-$version.xpi"
+mv "$signed"/*.xpi "$xpi"
 echo "Signed: $xpi"
-open -a Firefox "$xpi"
-osascript -e "display notification \"Version $version is ready. Click Add in Firefox.\" with title \"Browser Tab Archive\"" || true
+if [ -n "${GITHUB_OUTPUT:-}" ]; then
+  echo "version=$version" >> "$GITHUB_OUTPUT"
+  echo "xpi=$xpi" >> "$GITHUB_OUTPUT"
+fi

@@ -2,8 +2,9 @@
   "name": "browser-tab-archive",
   "private": true,
   "scripts": {
-    "release": "scripts/release.sh",
-    "install-hook": "scripts/install-hook.sh"
+    "dev": "web-ext run --source-dir . --ignore-files 'dev/**' 'scripts/**' 'dist/**' 'releases/**' 'node_modules/**'",
+    "ship": "scripts/ship.sh",
+    "update": "scripts/install-latest.sh"
   },
   "devDependencies": {
     "web-ext": "^10.8.0"

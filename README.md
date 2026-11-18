@@ -2,32 +2,33 @@
 
 Firefox extension: archive a tab or tab group with ⌘. (or the tab context menu), add a note, and find it again in the sidebar.
 
-## Try it
+## Develop
 
-1. Open `about:debugging#/runtime/this-firefox` in Firefox.
-2. Click **Load Temporary Add-on…** and pick `manifest.json` in this folder.
-3. Press ⌘. on any tab. The toolbar button shows and hides the sidebar.
+```bash
+npm install
+npm run dev
+```
+
+`npm run dev` opens a separate, throwaway Firefox profile with the extension loaded from this folder, and reloads it whenever you save a file. Your installed copy and its archive aren't touched. For UI work without Firefox, `node dev/serve.mjs` serves the pages with a fake `browser` API.
+
+Work on a branch and merge into `main` when the change is finished: every push to `main` is a release.
 
 The extension uses Manifest V2 with a persistent background page, not V3. In MV3, Firefox suspends the background script when idle, so hotkey and menu events arrive late. Firefox then refuses to open the sidebar from them. Firefox fully supports MV2.
 
 The toolbar icon uses `theme_icons` (`icon-dark.svg` on light toolbars, `icon-light.svg` on dark ones). `icon-dark.svg` also switches itself to the light color under a dark color scheme, because Firefox's extensions menu and sidebar icons ignore `theme_icons` with the built-in dark theme.
 
-A temporary add-on is removed when Firefox quits, along with its archive. Backups in `Downloads/browser-tab-archive/` stay on disk and can be imported again.
+Uninstalling deletes the archive. Backups in `Downloads/browser-tab-archive/` stay on disk and can be imported again.
 
 ## Releases
 
-Firefox only installs extensions permanently if Mozilla has signed them. `scripts/release.sh` signs the committed code as an **unlisted** add-on: Mozilla signs it but does not publish it on addons.mozilla.org, and the signed `.xpi` stays on this Mac. The version is `1.0.<number of commits>`, so each commit gets a higher version.
+Firefox only installs extensions permanently if Mozilla has signed them. On every push to `main`, the GitHub Action in `.github/workflows/release.yml` runs `scripts/release.sh`, which signs the committed code as an **unlisted** add-on: Mozilla signs it but doesn't publish it on addons.mozilla.org. The signed `.xpi` is attached to a GitHub release in this private repo. The version is `1.0.<number of commits on main>`.
 
-One-time setup:
+- `npm run ship`: push `main`, wait for the release, and open it in Firefox (click **Add**).
+- `npm run update`: open the newest release in Firefox, e.g. after merging a pull request on GitHub.
 
-1. Install the signing tool: `npm install --save-dev web-ext`
-2. Sign in at https://addons.mozilla.org/developers/addon/api/key/ and generate API credentials.
-3. Store them in the macOS Keychain. Each command asks for the value, so it doesn't end up in your shell history:
-   - `security add-generic-password -s tab-archive-amo -a jwt-issuer -w` (paste the JWT issuer)
-   - `security add-generic-password -s tab-archive-amo -a jwt-secret -w` (paste the JWT secret)
-4. Install the commit hook: `npm run install-hook`
+Data is kept across updates.
 
-After that, every commit on `main` signs a new version in the background and opens it in Firefox. Click **Add** to update. Data is kept across updates. Progress and errors go to `releases/release.log`. To release without committing, run `npm run release`.
+One-time setup: the repo needs two Actions secrets, `AMO_JWT_ISSUER` and `AMO_JWT_SECRET`, with the API credentials from https://addons.mozilla.org/developers/addon/api/key/. Set them with `gh secret set AMO_JWT_ISSUER` and `gh secret set AMO_JWT_SECRET`, which ask for the value.
 
 ## Layout
 
@@ -41,7 +42,8 @@ After that, every commit on `main` signs a new version in the background and ope
 | `popup/` | Note prompt, shown as the toolbar button's popup while archiving |
 | `sidebar/` | Archive list, search, inline edit/delete |
 | `options/` | Settings page |
-| `scripts/` | Release signing and the post-commit hook |
+| `scripts/` | Release signing (CI), `ship` and `update` |
+| `.github/workflows/` | Release workflow |
 | `dev/` | Mock `browser` API and a static server for previewing the UI in a normal browser. Not packaged. |
 
 ## Check in real Firefox

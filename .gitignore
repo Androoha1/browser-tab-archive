@@ -7,3 +7,4 @@ web-ext-artifacts/
 .env
 .amo-credentials
 releases/
+dist/
