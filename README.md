@@ -14,13 +14,20 @@ The toolbar icon uses `theme_icons` (`icon-dark.svg` on light toolbars, `icon-li
 
 A temporary add-on is removed when Firefox quits, along with its archive. Backups in `Downloads/tab-archive/` stay on disk and can be imported again.
 
-## Package
+## Releases
 
-```bash
-zip -r tab-archive.zip manifest.json background lib popup sidebar options icons
-```
+Firefox only installs extensions permanently if Mozilla has signed them. `scripts/release.sh` signs the committed code as an **unlisted** add-on: Mozilla signs it but does not publish it on addons.mozilla.org, and the signed `.xpi` stays on this Mac. The version is `1.0.<number of commits>`, so each commit gets a higher version.
 
-To install it permanently, sign the zip on addons.mozilla.org as an unlisted add-on.
+One-time setup:
+
+1. Install the signing tool: `npm install --save-dev web-ext`
+2. Sign in at https://addons.mozilla.org/developers/addon/api/key/ and generate API credentials.
+3. Store them in the macOS Keychain. Each command asks for the value, so it doesn't end up in your shell history:
+   - `security add-generic-password -s tab-archive-amo -a jwt-issuer -w` (paste the JWT issuer)
+   - `security add-generic-password -s tab-archive-amo -a jwt-secret -w` (paste the JWT secret)
+4. Install the commit hook: `npm run install-hook`
+
+After that, every commit on `main` signs a new version in the background and opens it in Firefox. Click **Add** to update. Data is kept across updates. Progress and errors go to `releases/release.log`. To release without committing, run `npm run release`.
 
 ## Layout
 
@@ -34,6 +41,7 @@ To install it permanently, sign the zip on addons.mozilla.org as an unlisted add
 | `popup/` | Note prompt, shown as the toolbar button's popup while archiving |
 | `sidebar/` | Archive list, search, inline edit/delete |
 | `options/` | Settings page |
+| `scripts/` | Release signing and the post-commit hook |
 | `dev/` | Mock `browser` API and a static server for previewing the UI in a normal browser. Not packaged. |
 
 ## Check in real Firefox

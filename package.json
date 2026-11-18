@@ -1,0 +1,8 @@
+{
+  "name": "tab-archive",
+  "private": true,
+  "scripts": {
+    "release": "scripts/release.sh",
+    "install-hook": "scripts/install-hook.sh"
+  }
+}

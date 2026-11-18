@@ -1,12 +1,15 @@
 {
   "manifest_version": 2,
   "name": "Tab Archive",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Archive a tab or a whole tab group with one keystroke, add a note, and find it again later.",
   "browser_specific_settings": {
     "gecko": {
-      "id": "tab-archive@local",
-      "strict_min_version": "139.0"
+      "id": "tab-archive@androoha1",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
     }
   },
   "incognito": "not_allowed",
